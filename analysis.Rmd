@@ -1,0 +1,33 @@
+---
+title: "Essay analysis"
+output: html_notebook
+---
+Here we will perform analysis of LIWC data of essays, written by different groups of people.
+
+```{r}
+library("tidyverse")
+library("dplyr")
+library("ggplot2")
+library("ggpubr")
+```
+
+First, let's load the data. Concatenated dataset is in ```all_groups.csv```
+
+```{r}
+data <- read.csv("./all_groups.csv")
+head(data)
+```
+This is concatenation of LIWC analysis using LIWC2015 + default russian dictionary. There is a lot of columns representing different word categories, but we only need those related to emotiona expression.
+
+```{r}
+needed_columns <- c("Filename", "group", "Позитив", "Негатив", "Беспокойство", "Гнев", "Грусть")
+data <- data[, needed_columns]
+head(data)
+```
+Also, let's rename the columns for convenience.
+
+```{r}
+columns <- c("file", "group", "Positive", "Negative", "Anxienty", "Anger", "Sadness")
+colnames(data) <- columns
+```
+
