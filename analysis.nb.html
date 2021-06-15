@@ -218,12 +218,33 @@ pre code {
 <p>Here we will perform analysis of LIWC data of essays, written by different groups of people.</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeShcInRpZHl2ZXJzZVwiKVxubGlicmFyeShcImRwbHlyXCIpXG5saWJyYXJ5KFwiZ2dwbG90MlwiKVxubGlicmFyeShcImdncHViclwiKVxuYGBgIn0= -->
-<pre class="r"><code>library(&quot;tidyverse&quot;)
-library(&quot;dplyr&quot;)
-library(&quot;ggplot2&quot;)
-library(&quot;ggpubr&quot;)</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeSh0aWR5dmVyc2UpXG5gYGAifQ== -->
+<pre class="r"><code>library(tidyverse)</code></pre>
 <!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiUmVnaXN0ZXJlZCBTMyBtZXRob2RzIG92ZXJ3cml0dGVuIGJ5ICdkYnBseXInOlxuICBtZXRob2QgICAgICAgICBmcm9tXG4gIHByaW50LnRibF9sYXp5ICAgICBcbiAgcHJpbnQudGJsX3NxbCAgICAgIFxu4pSA4pSAIEF0dGFjaGluZyBwYWNrYWdlcyDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIAgdGlkeXZlcnNlIDEuMy4xIOKUgOKUgFxu4pyTIGdncGxvdDIgMy4zLjMgICAgIOKckyBwdXJyciAgIDAuMy40XG7inJMgdGliYmxlICAzLjEuMiAgICAg4pyTIGRwbHlyICAgMS4wLjZcbuKckyB0aWR5ciAgIDEuMS4zICAgICDinJMgc3RyaW5nciAxLjQuMFxu4pyTIHJlYWRyICAgMS40LjAgICAgIOKckyBmb3JjYXRzIDAuNS4xXG7ilIDilIAgQ29uZmxpY3RzIOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgCB0aWR5dmVyc2VfY29uZmxpY3RzKCkg4pSA4pSAXG54IGRwbHlyOjpmaWx0ZXIoKSBtYXNrcyBzdGF0czo6ZmlsdGVyKClcbnggZHBseXI6OmxhZygpICAgIG1hc2tzIHN0YXRzOjpsYWcoKVxuIn0= -->
+<pre><code>Registered S3 methods overwritten by &#39;dbplyr&#39;:
+  method         from
+  print.tbl_lazy     
+  print.tbl_sql      
+── Attaching packages ──────────────────────────────────────────────────── tidyverse 1.3.1 ──
+✓ ggplot2 3.3.3     ✓ purrr   0.3.4
+✓ tibble  3.1.2     ✓ dplyr   1.0.6
+✓ tidyr   1.1.3     ✓ stringr 1.4.0
+✓ readr   1.4.0     ✓ forcats 0.5.1
+── Conflicts ─────────────────────────────────────────────────────── tidyverse_conflicts() ──
+x dplyr::filter() masks stats::filter()
+x dplyr::lag()    masks stats::lag()</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeShkcGx5cilcbmxpYnJhcnkoZ2dwbG90MilcbmxpYnJhcnkoZ2dwdWJyKVxuYGBgIn0= -->
+<pre class="r"><code>library(dplyr)
+library(ggplot2)
+library(ggpubr)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiUmVnaXN0ZXJlZCBTMyBtZXRob2Qgb3ZlcndyaXR0ZW4gYnkgJ2RhdGEudGFibGUnOlxuICBtZXRob2QgICAgICAgICAgIGZyb21cbiAgcHJpbnQuZGF0YS50YWJsZSAgICAgXG4ifQ== -->
+<pre><code>Registered S3 method overwritten by &#39;data.table&#39;:
+  method           from
+  print.data.table     </code></pre>
+<!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <p>First, let’s load the data. Concatenated dataset is in <code>all_groups.csv</code></p>
@@ -262,15 +283,69 @@ head(data)</code></pre>
 <p>Also, let’s rename the columns for convenience.</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuY29sdW1ucyA8LSBjKFwiZmlsZVwiLCBcImdyb3VwXCIsIFwiUG9zaXRpdmVcIiwgXCJOZWdhdGl2ZVwiLCBcIkFueGllbnR5XCIsIFwiQW5nZXJcIiwgXCJTYWRuZXNzXCIpXG5jb2xuYW1lcyhkYXRhKSA8LSBjb2x1bW5zXG5gYGAifQ== -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuY29sdW1ucyA8LSBjKFwiZmlsZVwiLCBcImdyb3VwXCIsIFwiUG9zaXRpdmVcIiwgXCJOZWdhdGl2ZVwiLCBcIkFueGllbnR5XCIsIFwiQW5nZXJcIiwgXCJTYWRuZXNzXCIpXG5lbW90aW9uX2NvbHVtbnMgPC0gYyhcIlBvc2l0aXZlXCIsIFwiTmVnYXRpdmVcIiwgXCJBbnhpZW50eVwiLCBcIkFuZ2VyXCIsIFwiU2FkbmVzc1wiKVxuY29sbmFtZXMoZGF0YSkgPC0gY29sdW1uc1xuYGBgIn0= -->
 <pre class="r"><code>columns &lt;- c(&quot;file&quot;, &quot;group&quot;, &quot;Positive&quot;, &quot;Negative&quot;, &quot;Anxienty&quot;, &quot;Anger&quot;, &quot;Sadness&quot;)
+emotion_columns &lt;- c(&quot;Positive&quot;, &quot;Negative&quot;, &quot;Anxienty&quot;, &quot;Anger&quot;, &quot;Sadness&quot;)
 colnames(data) &lt;- columns</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
+<p>Next, we will perform some exploratory analysis, checking what we are working on.</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZ3JvdXBfYnkoZGF0YSwgZ3JvdXApICU+JVxuICBzdW1tYXJpc2UoXG4gICAgY291bnQgPSBuKCksXG4gICAgYWNyb3NzKFxuICAgICAgZW1vdGlvbl9jb2x1bW5zLFxuICAgICAgbGlzdChcbiAgICAgICAgbWVhbiA9IH4gbWVhbigueCwgbmEucm0gPSBUUlVFKSxcbiAgICAgICAgc2QgPSB+IHNkKC54LCBuYS5ybSA9IFRSVUUpLFxuICAgICAgICBtZWRpYW4gPSB+IG1lZGlhbigueCwgbmEucm0gPSBUUlVFKVxuICAgICAgKVxuICAgIClcbiAgKVxuYGBgIn0= -->
+<pre class="r"><code>group_by(data, group) %&gt;%
+  summarise(
+    count = n(),
+    across(
+      emotion_columns,
+      list(
+        mean = ~ mean(.x, na.rm = TRUE),
+        sd = ~ sd(.x, na.rm = TRUE),
+        median = ~ median(.x, na.rm = TRUE)
+      )
+    )
+  )</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiTm90ZTogVXNpbmcgYW4gZXh0ZXJuYWwgdmVjdG9yIGluIHNlbGVjdGlvbnMgaXMgYW1iaWd1b3VzLlxu4oS5IFVzZSBgYWxsX29mKGVtb3Rpb25fY29sdW1ucylgIGluc3RlYWQgb2YgYGVtb3Rpb25fY29sdW1uc2AgdG8gc2lsZW5jZSB0aGlzIG1lc3NhZ2UuXG7ihLkgU2VlIDxodHRwczovL3RpZHlzZWxlY3Quci1saWIub3JnL3JlZmVyZW5jZS9mYXEtZXh0ZXJuYWwtdmVjdG9yLmh0bWw+LlxuVGhpcyBtZXNzYWdlIGlzIGRpc3BsYXllZCBvbmNlIHBlciBzZXNzaW9uLlxuIn0= -->
+<pre><code>Note: Using an external vector in selections is ambiguous.
+ℹ Use `all_of(emotion_columns)` instead of `emotion_columns` to silence this message.
+ℹ See &lt;https://tidyselect.r-lib.org/reference/faq-external-vector.html&gt;.
+This message is displayed once per session.</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbInRibF9kZiIsInRibCIsImRhdGEuZnJhbWUiXSwibnJvdyI6NSwibmNvbCI6MTcsInN1bW1hcnkiOnsiQSB0aWJibGUiOlsiNSB4IDE3Il19fSwicmRmIjoiVWtSWU13cFlDZ0FBQUFNQUJBQURBQU1GQUFBQUFBVlZWRVl0T0FBQUJBSUFBQUFCQUFRQUNRQUFBQUY0QUFBREV3QUFBQkVBQUFBUUFBQUFCUUFFQUFrQUFBQUdZMnhwYm1sakFBUUFDUUFBQUFkamIyNTBjbTlzQUFRQUNRQUFBQU53YzNrQUJBQUpBQUFBQTNOdll3QUVBQWtBQUFBRWMzUmxiUUFBQUEwQUFBQUZBQUFBRWdBQUFCWUFBQUJ2QUFBQUdnQUFBQTBBQUFBT0FBQUFCVUFoNGRsUXlEKzNRQndxV3pxbHM2cEFGV0dhVm9oWlRVQWhHL2FNTlpBbVFCMUM5QzlDOUM4QUFBQU9BQUFBQlVBVERrZGN5VTMzUUFPYWRIYVFhTE5BRUN1bmdzbThOVUFGcCtmelpnc21QLzZUN1Q1WnRVQUFBQUFPQUFBQUJVQWZucmhSNjRVZlFCclhDajF3bzlkQUdMaFI2NFVldUVBaEdabVptWm1hUUIxd285Y0tQWEVBQUFBT0FBQUFCVUFEZy90eTZtSFpQL3F3MzJzTjlyRS85UlhkSU84ZUswQUJwOGRKUVdEalFBS20vYU1OWkFrQUFBQU9BQUFBQlQvMjFFWkU0Y2h0UCtsbEFEc3NEbm8vOVcvYXl3bDh4ei8wUHJSYTZNQjFQL3FLTVptUFFua0FBQUFPQUFBQUJVQUFQWENqMXdvOVAvdEhyaFI2NFVnLzhNek16TXpNelQvL3JoUjY0VWV1UC80VWV1RkhyaFFBQUFBT0FBQUFCVC9vVWV1RkhyaFNQK0hOdXh6YnNjNC8yK0ljT3F3a2lEL2lUVEdmNXNzNlArT3hPeE94T3hRQUFBQU9BQUFBQlQveE9MVVhLeEQvUDkyMW5jckN1UlEvNFF6U2QxYmtsei9haGxZQ3M2VVBQOXVMQnp5UmJMY0FBQUFPQUFBQUJUL01LUFhDajF3cFArQlI2NFVldUZJLzA5Y0tQWENqMXovaWoxd285Y0tRUDltWm1abVptWm9BQUFBT0FBQUFCVC9xblFOcDBEYWRQOTA4Z2xQSUpUdy8yM2ZWN3RkUkZ6L3JIU1VGZzR0c1ArSCtiTE9ZQmswQUFBQU9BQUFBQlQvdkRYUys2YXNhUDl2NjlQWDVEMWMvNVliSWRVUHAyei9vWm03eEpRQVRQK2d1bjE1TmNlQUFBQUFPQUFBQUJUL2VabVptWm1abVA5VndvOWNLUFhFL3l1RkhyaFI2NFQva2V1RkhyaFI3UDlVZXVGSHJoUjhBQUFBT0FBQUFCVC9oSHJoUjY0VWZQOSt1RkhyaFI2NC8xRC9XcThZUXlqL2h6QU1tbU0velArUUpjOHB2MmpFQUFBQU9BQUFBQlQvcjZqaGlRV1BiUDl3MnU3Q1R6OGcvM1pyL0FLU2NaVC9pTWVkazhzVjJQK05ScU1uMXlmc0FBQUFPQUFBQUJRQUFBQUFBQUFBQVA5VWV1RkhyaFI4QUFBQUFBQUFBQUQvWENqMXdvOWNLUDltWm1abVptWm9BQUFRQ0FBQUFBUUFFQUFrQUFBQUZibUZ0WlhNQUFBQVFBQUFBRVFBRUFBa0FBQUFGWjNKdmRYQUFCQUFKQUFBQUJXTnZkVzUwQUFRQUNRQUFBQTFRYjNOcGRHbDJaVjl0WldGdUFBUUFDUUFBQUF0UWIzTnBkR2wyWlY5elpBQUVBQWtBQUFBUFVHOXphWFJwZG1WZmJXVmthV0Z1QUFRQUNRQUFBQTFPWldkaGRHbDJaVjl0WldGdUFBUUFDUUFBQUF0T1pXZGhkR2wyWlY5elpBQUVBQWtBQUFBUFRtVm5ZWFJwZG1WZmJXVmthV0Z1QUFRQUNRQUFBQTFCYm5ocFpXNTBlVjl0WldGdUFBUUFDUUFBQUF0QmJuaHBaVzUwZVY5elpBQUVBQWtBQUFBUFFXNTRhV1Z1ZEhsZmJXVmthV0Z1QUFRQUNRQUFBQXBCYm1kbGNsOXRaV0Z1QUFRQUNRQUFBQWhCYm1kbGNsOXpaQUFFQUFrQUFBQU1RVzVuWlhKZmJXVmthV0Z1QUFRQUNRQUFBQXhUWVdSdVpYTnpYMjFsWVc0QUJBQUpBQUFBQ2xOaFpHNWxjM05mYzJRQUJBQUpBQUFBRGxOaFpHNWxjM05mYldWa2FXRnVBQUFFQWdBQUFBRUFCQUFKQUFBQUNYSnZkeTV1WVcxbGN3QUFBQTBBQUFBQ2dBQUFBUC8vLy9zQUFBUUNBQUFBQVFBRUFBa0FBQUFGWTJ4aGMzTUFBQUFRQUFBQUFRQUVBQWtBQUFBS1pHRjBZUzVtY21GdFpRQUFBUDRBQUFRQ0FBQUFBUUFFQUFrQUFBQUhiM0IwYVc5dWN3QUFBaE1BQUFBRkFBQUFFQUFBQUFFQUJBQUpBQUFBQVhJQUFBQVFBQUFBQVFBRUFBa0FBQUFQZFc1dVlXMWxaQzFqYUhWdWF5MHhBQUFBQ2dBQUFBRUFBQUFBQUFBQURRQUFBQUVBQUFBRkFBQUFEUUFBQUFFQUFBQVJBQUFFQWdBQUF2OEFBQUFRQUFBQUJRQUVBQWtBQUFBR1pXNW5hVzVsQUFRQUNRQUFBQVZzWVdKbGJBQUVBQWtBQUFBT2NtOTNibUZ0WlhNdWNISnBiblFBQkFBSkFBQUFDbkp2ZDNNdWRHOTBZV3dBQkFBSkFBQUFDbU52YkhNdWRHOTBZV3dBQUFEK0FBQUEvZz09In0= -->
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["group"],"name":[1],"type":["chr"],"align":["left"]},{"label":["count"],"name":[2],"type":["int"],"align":["right"]},{"label":["Positive_mean"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["Positive_sd"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["Positive_median"],"name":[5],"type":["dbl"],"align":["right"]},{"label":["Negative_mean"],"name":[6],"type":["dbl"],"align":["right"]},{"label":["Negative_sd"],"name":[7],"type":["dbl"],"align":["right"]},{"label":["Negative_median"],"name":[8],"type":["dbl"],"align":["right"]},{"label":["Anxienty_mean"],"name":[9],"type":["dbl"],"align":["right"]},{"label":["Anxienty_sd"],"name":[10],"type":["dbl"],"align":["right"]},{"label":["Anxienty_median"],"name":[11],"type":["dbl"],"align":["right"]},{"label":["Anger_mean"],"name":[12],"type":["dbl"],"align":["right"]},{"label":["Anger_sd"],"name":[13],"type":["dbl"],"align":["right"]},{"label":["Anger_median"],"name":[14],"type":["dbl"],"align":["right"]},{"label":["Sadness_mean"],"name":[15],"type":["dbl"],"align":["right"]},{"label":["Sadness_sd"],"name":[16],"type":["dbl"],"align":["right"]},{"label":["Sadness_median"],"name":[17],"type":["dbl"],"align":["right"]}],"data":[{"1":"clinic","2":"18","3":"8.941111","4":"4.763944","5":"7.905","6":"2.439444","7":"1.4268248","8":"2.030","9":"0.7600000","10":"1.0763446","11":"0.22","12":"0.8316667","13":"0.9703926","14":"0.475","15":"0.5350000","16":"0.8723413","17":"0.00"},{"1":"control","2":"22","3":"7.041364","4":"2.450417","5":"6.710","6":"1.668182","7":"0.7935792","8":"1.705","9":"0.5563636","10":"0.4642100","11":"0.51","12":"0.4568182","13":"0.4371922","14":"0.335","15":"0.4950000","16":"0.4408406","17":"0.33"},{"1":"psy","2":"111","3":"5.345315","4":"4.042631","5":"6.180","6":"1.317838","7":"1.3398083","8":"1.050","9":"0.4356757","10":"0.5328152","11":"0.31","12":"0.4291892","13":"0.6727030","14":"0.210","15":"0.3163964","16":"0.4625852","17":"0.00"},{"1":"soc","2":"26","3":"8.554615","4":"2.706985","5":"8.550","6":"2.206923","7":"1.2653087","8":"1.980","9":"0.5719231","10":"0.4144492","11":"0.58","12":"0.8473077","13":"0.7625041","14":"0.640","15":"0.5561538","16":"0.5685918","17":"0.36"},{"1":"stem","2":"13","3":"7.315385","4":"1.911115","5":"7.360","6":"2.331538","7":"1.6587387","8":"1.880","9":"0.6153846","10":"0.4303606","11":"0.40","12":"0.5623077","13":"0.7556912","14":"0.330","15":"0.6261538","16":"0.6037182","17":"0.40"}],"options":{"columns":{"min":{},"max":[10],"total":[17]},"rows":{"min":[10],"max":[10],"total":[5]},"pages":{}}}
+  </script>
+</div>
+<!-- rnb-frame-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<p>So, in general values have high SD + due to liwc limitations, there is a lot of zeros in some columns. Let’s display the same information in a visual way.</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZm9yKGNvbCBpbiBlbW90aW9uX2NvbHVtbnMpIHtcbiAgZ2dib3hwbG90KFxuICAgIGRhdGEsIFxuICAgIHggPSBcImdyb3VwXCIsIHkgPSBjb2wsIFxuICAgIGNvbG9yID0gXCJncm91cFwiLFxuICAgIHlsYWIgPSBjb2wsIHhsYWIgPSBcIkdyb3VwXCJcbiAgKVxuICBnZ3NhdmUoXG4gICAgcGFzdGUoXCJwbG90cy9ib3hwbG90cy9cIiwgY29sLCBcIi5zdmdcIiwgc2VwPScnKVxuICApXG59XG5gYGAifQ== -->
+<pre class="r"><code>for(col in emotion_columns) {
+  ggboxplot(
+    data, 
+    x = &quot;group&quot;, y = col, 
+    color = &quot;group&quot;,
+    ylab = col, xlab = &quot;Group&quot;
+  )
+  ggsave(
+    paste(&quot;plots/boxplots/&quot;, col, &quot;.svg&quot;, sep=&#39;&#39;)
+  )
+}</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiU2F2aW5nIDcgeCA3IGluIGltYWdlXG4ifQ== -->
+<pre><code>Saving 7 x 7 in image</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
 <!-- rnb-text-end -->
 
-<div id="rmd-source-code">LS0tCnRpdGxlOiAiRXNzYXkgYW5hbHlzaXMiCm91dHB1dDogaHRtbF9ub3RlYm9vawotLS0KSGVyZSB3ZSB3aWxsIHBlcmZvcm0gYW5hbHlzaXMgb2YgTElXQyBkYXRhIG9mIGVzc2F5cywgd3JpdHRlbiBieSBkaWZmZXJlbnQgZ3JvdXBzIG9mIHBlb3BsZS4KCmBgYHtyfQpsaWJyYXJ5KCJ0aWR5dmVyc2UiKQpsaWJyYXJ5KCJkcGx5ciIpCmxpYnJhcnkoImdncGxvdDIiKQpsaWJyYXJ5KCJnZ3B1YnIiKQpgYGAKCkZpcnN0LCBsZXQncyBsb2FkIHRoZSBkYXRhLiBDb25jYXRlbmF0ZWQgZGF0YXNldCBpcyBpbiBgYGBhbGxfZ3JvdXBzLmNzdmBgYAoKYGBge3J9CmRhdGEgPC0gcmVhZC5jc3YoIi4vYWxsX2dyb3Vwcy5jc3YiKQpoZWFkKGRhdGEpCmBgYApUaGlzIGlzIGNvbmNhdGVuYXRpb24gb2YgTElXQyBhbmFseXNpcyB1c2luZyBMSVdDMjAxNSArIGRlZmF1bHQgcnVzc2lhbiBkaWN0aW9uYXJ5LiBUaGVyZSBpcyBhIGxvdCBvZiBjb2x1bW5zIHJlcHJlc2VudGluZyBkaWZmZXJlbnQgd29yZCBjYXRlZ29yaWVzLCBidXQgd2Ugb25seSBuZWVkIHRob3NlIHJlbGF0ZWQgdG8gZW1vdGlvbmEgZXhwcmVzc2lvbi4KCmBgYHtyfQpuZWVkZWRfY29sdW1ucyA8LSBjKCJGaWxlbmFtZSIsICJncm91cCIsICLQn9C+0LfQuNGC0LjQsiIsICLQndC10LPQsNGC0LjQsiIsICLQkdC10YHQv9C+0LrQvtC50YHRgtCy0L4iLCAi0JPQvdC10LIiLCAi0JPRgNGD0YHRgtGMIikKZGF0YSA8LSBkYXRhWywgbmVlZGVkX2NvbHVtbnNdCmhlYWQoZGF0YSkKYGBgCkFsc28sIGxldCdzIHJlbmFtZSB0aGUgY29sdW1ucyBmb3IgY29udmVuaWVuY2UuCgpgYGB7cn0KY29sdW1ucyA8LSBjKCJmaWxlIiwgImdyb3VwIiwgIlBvc2l0aXZlIiwgIk5lZ2F0aXZlIiwgIkFueGllbnR5IiwgIkFuZ2VyIiwgIlNhZG5lc3MiKQpjb2xuYW1lcyhkYXRhKSA8LSBjb2x1bW5zCmBgYAoK</div>
+<div id="rmd-source-code">LS0tCnRpdGxlOiAiRXNzYXkgYW5hbHlzaXMiCm91dHB1dDogaHRtbF9ub3RlYm9vawotLS0KSGVyZSB3ZSB3aWxsIHBlcmZvcm0gYW5hbHlzaXMgb2YgTElXQyBkYXRhIG9mIGVzc2F5cywgd3JpdHRlbiBieSBkaWZmZXJlbnQgZ3JvdXBzIG9mIHBlb3BsZS4KCmBgYHtyfQpsaWJyYXJ5KHRpZHl2ZXJzZSkKbGlicmFyeShkcGx5cikKbGlicmFyeShnZ3Bsb3QyKQpsaWJyYXJ5KGdncHVicikKYGBgCgpGaXJzdCwgbGV0J3MgbG9hZCB0aGUgZGF0YS4gQ29uY2F0ZW5hdGVkIGRhdGFzZXQgaXMgaW4gYGBgYWxsX2dyb3Vwcy5jc3ZgYGAKCmBgYHtyfQpkYXRhIDwtIHJlYWQuY3N2KCIuL2FsbF9ncm91cHMuY3N2IikKaGVhZChkYXRhKQpgYGAKVGhpcyBpcyBjb25jYXRlbmF0aW9uIG9mIExJV0MgYW5hbHlzaXMgdXNpbmcgTElXQzIwMTUgKyBkZWZhdWx0IHJ1c3NpYW4gZGljdGlvbmFyeS4gVGhlcmUgaXMgYSBsb3Qgb2YgY29sdW1ucyByZXByZXNlbnRpbmcgZGlmZmVyZW50IHdvcmQgY2F0ZWdvcmllcywgYnV0IHdlIG9ubHkgbmVlZCB0aG9zZSByZWxhdGVkIHRvIGVtb3Rpb25hIGV4cHJlc3Npb24uCgpgYGB7cn0KbmVlZGVkX2NvbHVtbnMgPC0gYygiRmlsZW5hbWUiLCAiZ3JvdXAiLCAi0J/QvtC30LjRgtC40LIiLCAi0J3QtdCz0LDRgtC40LIiLCAi0JHQtdGB0L/QvtC60L7QudGB0YLQstC+IiwgItCT0L3QtdCyIiwgItCT0YDRg9GB0YLRjCIpCmRhdGEgPC0gZGF0YVssIG5lZWRlZF9jb2x1bW5zXQpoZWFkKGRhdGEpCmBgYAoKQWxzbywgbGV0J3MgcmVuYW1lIHRoZSBjb2x1bW5zIGZvciBjb252ZW5pZW5jZS4KYGBge3J9CmNvbHVtbnMgPC0gYygiZmlsZSIsICJncm91cCIsICJQb3NpdGl2ZSIsICJOZWdhdGl2ZSIsICJBbnhpZW50eSIsICJBbmdlciIsICJTYWRuZXNzIikKZW1vdGlvbl9jb2x1bW5zIDwtIGMoIlBvc2l0aXZlIiwgIk5lZ2F0aXZlIiwgIkFueGllbnR5IiwgIkFuZ2VyIiwgIlNhZG5lc3MiKQpjb2xuYW1lcyhkYXRhKSA8LSBjb2x1bW5zCmBgYAoKTmV4dCwgd2Ugd2lsbCBwZXJmb3JtIHNvbWUgZXhwbG9yYXRvcnkgYW5hbHlzaXMsIGNoZWNraW5nIHdoYXQgd2UgYXJlIHdvcmtpbmcgb24uCmBgYHtyfQpncm91cF9ieShkYXRhLCBncm91cCkgJT4lCiAgc3VtbWFyaXNlKAogICAgY291bnQgPSBuKCksCiAgICBhY3Jvc3MoCiAgICAgIGVtb3Rpb25fY29sdW1ucywKICAgICAgbGlzdCgKICAgICAgICBtZWFuID0gfiBtZWFuKC54LCBuYS5ybSA9IFRSVUUpLAogICAgICAgIHNkID0gfiBzZCgueCwgbmEucm0gPSBUUlVFKSwKICAgICAgICBtZWRpYW4gPSB+IG1lZGlhbigueCwgbmEucm0gPSBUUlVFKQogICAgICApCiAgICApCiAgKQpgYGAKU28sIGluIGdlbmVyYWwgdmFsdWVzIGhhdmUgaGlnaCBTRCArIGR1ZSB0byBsaXdjIGxpbWl0YXRpb25zLCB0aGVyZSBpcyBhIGxvdCBvZiB6ZXJvcyBpbiBzb21lIGNvbHVtbnMuIExldCdzIGRpc3BsYXkgdGhlIHNhbWUgaW5mb3JtYXRpb24gaW4gYSB2aXN1YWwgd2F5LgpgYGB7cn0KZm9yKGNvbCBpbiBlbW90aW9uX2NvbHVtbnMpIHsKICBnZ2JveHBsb3QoCiAgICBkYXRhLCAKICAgIHggPSAiZ3JvdXAiLCB5ID0gY29sLCAKICAgIGNvbG9yID0gImdyb3VwIiwKICAgIHlsYWIgPSBjb2wsIHhsYWIgPSAiR3JvdXAiCiAgKQogIGdnc2F2ZSgKICAgIHBhc3RlKCJwbG90cy9ib3hwbG90cy8iLCBjb2wsICIuc3ZnIiwgc2VwPScnKQogICkKfQpgYGAKCgoK</div>
 
 
 

@@ -5,10 +5,10 @@ output: html_notebook
 Here we will perform analysis of LIWC data of essays, written by different groups of people.
 
 ```{r}
-library("tidyverse")
-library("dplyr")
-library("ggplot2")
-library("ggpubr")
+library(tidyverse)
+library(dplyr)
+library(ggplot2)
+library(ggpubr)
 ```
 
 First, let's load the data. Concatenated dataset is in ```all_groups.csv```
@@ -24,10 +24,43 @@ needed_columns <- c("Filename", "group", "Позитив", "Негатив", "Б
 data <- data[, needed_columns]
 head(data)
 ```
-Also, let's rename the columns for convenience.
 
+Also, let's rename the columns for convenience.
 ```{r}
 columns <- c("file", "group", "Positive", "Negative", "Anxienty", "Anger", "Sadness")
+emotion_columns <- c("Positive", "Negative", "Anxienty", "Anger", "Sadness")
 colnames(data) <- columns
 ```
+
+Next, we will perform some exploratory analysis, checking what we are working on.
+```{r}
+group_by(data, group) %>%
+  summarise(
+    count = n(),
+    across(
+      emotion_columns,
+      list(
+        mean = ~ mean(.x, na.rm = TRUE),
+        sd = ~ sd(.x, na.rm = TRUE),
+        median = ~ median(.x, na.rm = TRUE)
+      )
+    )
+  )
+```
+So, in general values have high SD + due to liwc limitations, there is a lot of zeros in some columns. Let's display the same information in a visual way.
+```{r}
+for(col in emotion_columns) {
+  ggboxplot(
+    data, 
+    x = "group", y = col, 
+    color = "group",
+    ylab = col, xlab = "Group"
+  )
+  ggsave(
+    paste("plots/boxplots/", col, ".svg", sep='')
+  )
+}
+```
+
+
 
