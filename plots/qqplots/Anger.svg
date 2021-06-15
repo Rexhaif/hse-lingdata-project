@@ -169,6 +169,6 @@
 <text x='427.88' y='481.29' text-anchor='middle' style='font-size: 12.00px; font-family: Arimo;' textLength='7.64px' lengthAdjust='spacingAndGlyphs'>2</text>
 <text x='267.79' y='495.52' text-anchor='middle' style='font-size: 12.00px; font-family: Arimo;' textLength='67.06px' lengthAdjust='spacingAndGlyphs'>Theoretical</text>
 <text transform='translate(14.73,246.30) rotate(-90)' text-anchor='middle' style='font-size: 12.00px; font-family: Arimo;' textLength='45.01px' lengthAdjust='spacingAndGlyphs'>Sample</text>
-<text x='37.57' y='16.47' style='font-size: 14.40px; font-family: Arimo;' textLength='149.91px' lengthAdjust='spacingAndGlyphs'>Q-Q plot for  Positive</text>
+<text x='37.57' y='16.47' style='font-size: 14.40px; font-family: Arimo;' textLength='145.34px' lengthAdjust='spacingAndGlyphs'>Q-Q plot for Positive</text>
 </g>
 </svg>

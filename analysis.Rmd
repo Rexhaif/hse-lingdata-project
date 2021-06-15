@@ -68,10 +68,10 @@ We need to examine the distribution of values overall and inside each group. Let
 for(col in emotion_columns) {
   ggqqplot(
     get(col, data),
-    title=paste("Q-Q plot for ", "Positive")
+    title=paste("Q-Q plot for ", "Positive", sep='')
   )
   ggsave(
-    paste("plots/qqplots/", col, ".svg")
+    paste("plots/qqplots/", col, ".svg", sep='')
   )
 }
 ```
