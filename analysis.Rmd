@@ -58,7 +58,7 @@ for(col in emotion_columns) {
     ylab = col, xlab = "Group"
   )
   ggsave(
-    paste("plots/boxplots/", col, ".svg", sep='')
+    paste("plots/boxplots/", col, ".pdf", sep='')
   )
 }
 ```
@@ -71,13 +71,28 @@ for(col in emotion_columns) {
     title=paste("Q-Q plot for ", "Positive", sep='')
   )
   ggsave(
-    paste("plots/qqplots/", col, ".svg", sep='')
+    paste("plots/qqplots/", col, ".pdf", sep='')
   )
 }
 ```
+Our data partially fits Q-Q plot theoretical part, so it may be normal distribution. But there is also some deviations. Guess we need to look at histograms.
 
-
-
+```{r}
+for(col in emotion_columns) {
+  ggplot(data, aes_string(x=col)) +
+    geom_histogram(
+      aes(y=..density..),
+      position="identity",
+      colour="black", fill="white",
+      alpha=0.5
+    ) +
+    geom_density(alpha=0.2, fill="#FF6666")
+  ggsave(
+    paste("plots/histogram/", col, ".pdf", sep="")
+  )
+}
+```
+By looking at histograms, we can say that some of our categories are more likely to be from exponential distribution(Anger, Anxiety, Sadness) and some are more likely ot be from Normal distribution(Positive, Negative).
 
 
 
