@@ -9,6 +9,8 @@ library(tidyverse)
 library(dplyr)
 library(ggplot2)
 library(ggpubr)
+library(coin)
+library(rstatix)
 ```
 
 First, let's load the data. Concatenated dataset is in ```all_groups.csv```
@@ -92,8 +94,67 @@ for(col in emotion_columns) {
   )
 }
 ```
-By looking at histograms, we can say that some of our categories are more likely to be from exponential distribution(Anger, Anxiety, Sadness) and some are more likely ot be from Normal distribution(Positive, Negative).
+By looking at histograms, we can say that some of our categories are more likely to be from exponential distribution(Anger, Anxiety, Sadness) and some are more likely ot be from Normal distribution(Positive, Negative). Probably it is save to say that our data generally do not come from normal distribtuion, but additionally, we will perform Shapiro-Wilk test to check of any values are `normal` enough. We will use $\alpha = 0.001$ as our significance level.
 
+```{r}
+for(col in emotion_columns) {
+  print("=============================")
+  print(col)
+  print(shapiro.test(get(col, data)))
+}
+```
+
+As none of the tests returned p-value > $\alpha = 0.001$, we do reject Null hypothesis(which states that our data comes from normal distribution).
+
+# Let's move into actual hypothesis testing
+
+Mainly we want to learn if any of groups of people used emotional words differently(more or less frequently) than the control group. And if this is true, we want to know the groups and confidence interval of medians of values.
+
+Firstly, we will check if the effect(using emotional wording differently among groups) is present at all. For this, the Kruskal-Wallis test to be used. For this test the null hypothesis is that parameter distribution is the same for every group. We will use significance level of $\alpha = 0.1$.
+
+```{r}
+for(col in emotion_columns) {
+  formula <- paste(col, "~ group")
+  print("=====================================================")
+  print(formula)
+  print(kruskal.test(as.formula(formula), data = data, na.action = na.exclude))
+}
+```
+
+Only for Anger word category the kruskal test p-value is less than significance level. That means that in our data the effect is present only for Anger. Let's apply pairwise Wilcoxon(Mann-Whitney) test to see which groups are different. Significance level remains the same: $\alpha = 0.1$.
+
+```{r}
+data %>% pairwise_wilcox_test(
+  Anger ~ group,
+  p.adjust.method = "BH",
+  ref.group = "control"
+)
+```
+
+As we see, we can reject null-hypothesis for Mann-Whitney test for following pairs:
+- Clinic / Control
+- Soc / Control
+
+Let's estimate effect_size:
+
+```{r}
+control_clinic = data %>% filter(group == "control" | group == "clinic")
+control_soc = data %>% filter(group == "control" | group == "soc")
+print(wilcox_effsize(control_clinic, Anger ~ group, ))
+print(wilcox_effsize(control_soc, Anger ~ group))
+```
+
+Finally, we will compute CI of medians in each group:
+
+```{r}
+print("Control")
+print(wilcox.test(control$Anger, conf.int = TRUE, conf.level = 0.95)$conf.int)
+print("Clinic")
+print(wilcox.test(clinic$Anger, conf.int = TRUE, conf.level = 0.95)$conf.int)
+print("Soc")
+print(wilcox.test(clinic$Anger, conf.int = TRUE, conf.level = 0.95)$conf.int)
+
+```
 
 
 
