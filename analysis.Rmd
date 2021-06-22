@@ -5,6 +5,11 @@ output: html_notebook
 Here we will perform analysis of LIWC data of essays, written by different groups of people.
 
 ```{r}
+install.packages(c("tidyverse", "dplyr", "ggplot2", "ggpubr", "coin", "rstatix"))
+```
+
+
+```{r}
 library(tidyverse)
 library(dplyr)
 library(ggplot2)
@@ -16,7 +21,7 @@ library(rstatix)
 First, let's load the data. Concatenated dataset is in ```all_groups.csv```
 
 ```{r}
-data <- read.csv("./all_groups.csv")
+data <- read.csv("https://raw.githubusercontent.com/Rexhaif/hse-lingdata-project/main/all_groups.csv")
 data[data == 0] <- NA
 head(data)
 ```
@@ -140,8 +145,12 @@ Let's estimate effect_size:
 ```{r}
 control_clinic = data %>% filter(group == "control" | group == "clinic")
 control_soc = data %>% filter(group == "control" | group == "soc")
-print(wilcox_effsize(control_clinic, Anger ~ group, ))
+control_psy = data %>% filter(group == "control" | group == "psy")
+control_stem = data %>% filter(group == "control" | group == "stem")
+print(wilcox_effsize(control_clinic, Anger ~ group))
 print(wilcox_effsize(control_soc, Anger ~ group))
+print(wilcox_effsize(control_psy, Anger ~ group))
+print(wilcox_effsize(control_stem, Anger ~ group))
 ```
 
 Finally, we will compute CI of medians in each group:
