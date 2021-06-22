@@ -1,6 +1,10 @@
 ---
 title: "Essay analysis"
-output: html_notebook
+output:
+  html_document:
+    df_print: paged
+  html_notebook: default
+  pdf_document: default
 ---
 Here we will perform analysis of LIWC data of essays, written by different groups of people.
 
@@ -156,12 +160,15 @@ print(wilcox_effsize(control_stem, Anger ~ group))
 Finally, we will compute CI of medians in each group:
 
 ```{r}
+control = data %>% filter(group == "control")
+clinic = data %>% filter(group == "clinic")
+soc = data %>% filter(group == "soc")
 print("Control")
 print(wilcox.test(control$Anger, conf.int = TRUE, conf.level = 0.95)$conf.int)
 print("Clinic")
 print(wilcox.test(clinic$Anger, conf.int = TRUE, conf.level = 0.95)$conf.int)
 print("Soc")
-print(wilcox.test(clinic$Anger, conf.int = TRUE, conf.level = 0.95)$conf.int)
+print(wilcox.test(soc$Anger, conf.int = TRUE, conf.level = 0.95)$conf.int)
 
 ```
 
